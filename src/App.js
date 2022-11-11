@@ -4,14 +4,24 @@ import Form from "react-bootstrap/Form";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, changeCompleted, removeTodo } from "./store/TodosSlice";
 import ListGroup from "react-bootstrap/ListGroup";
+import { Alert } from "react-bootstrap";
 const App = () => {
   const { todos } = useSelector(state => state.TodosSlice);
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [completed, setCompleted] = useState(false);
+  const [error, setError] = useState("");
 
   const onAdd = () => {
-    dispatch(addTodo({ id: new Date().getTime(), title, completed }));
+    const todoData = { id: new Date().getTime(), title, completed };
+    if (title) {
+      dispatch(addTodo(todoData));
+    } else {
+      setError("Title Alanı Boş Bırakılamaz!");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
   };
 
   const toggle = (id, completed) => {
@@ -46,6 +56,11 @@ const App = () => {
           Ekle
         </Button>
       </Form>
+      {error && (
+        <Alert variant="danger" className="w-50 mt-2">
+          <p>Title Alanı Boş Bırakılamaz</p>
+        </Alert>
+      )}
       <div className="w-25 mt-4">
         <ListGroup>
           {todos?.map(todo => (

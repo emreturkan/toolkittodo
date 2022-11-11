@@ -5,7 +5,6 @@ const initialState = {
     { id: 1, title: "test", completed: true },
     { id: 2, title: "Elma Al", completed: false },
   ],
-  error: "",
 };
 
 const TodosSlice = createSlice({
